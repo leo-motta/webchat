@@ -34,7 +34,6 @@ const SignIn = () => {
                     </button>
                 </div>
             </form>
-            
         </div>
     )
 }

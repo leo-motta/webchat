@@ -1,5 +1,6 @@
 const express = require('express')
 const dotenv = require('dotenv').config()
+const {errorHandler} = require('./middleware/errorHandler')
 const connectDB = require('./config/db.js')
 
 console.log(process.env.MONGO_URI)
@@ -14,3 +15,7 @@ app.listen(port, () => {
 
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
+
+app.use('/api/users', require('./routes/userRoutes'))
+
+app.use(errorHandler)
