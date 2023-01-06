@@ -8,32 +8,35 @@ const register = asyncHandler(async(req,res) => {
 
     const { name, email, password} = req.body
 
+    if(!name || !email || !password) {
+        res.status(400)
+        throw new Error('Invalid data')
+    }
+
     //Check if user already exists
-    User.findOne({email})
-        .then((response)=> {
-            if(response) {
-                res.status(400)
-                throw new Error('User already exists')
-            }
-        })
+    const userExists = await User.findOne({email})
+    if(userExists) {
+        res.status(400)
+        throw new Error('User already exists')
+    }
     
-    User.create({
-        name: name,
-        email: email,
-        password: password
+    //Creates user
+    const user = await User.create({
+        name:name,
+        email:email,
+        password:password
     })
-    .then((user)=> {
+    if(user) {
         res.status(201).json({
             _id:user._id,
             name:user.name,
-            email:user.email
+            email:user.email,
+            imageURL:user.imageURL,
         })
-    })
-    .catch((error) => {
+    } else {
         res.status(400)
-        throw new Error('Invalid user data: '+ error.message)
-    })
-
+        throw new Error('Invalid user data')
+    }
 })
 
 //@desc     Login a user
@@ -42,19 +45,21 @@ const register = asyncHandler(async(req,res) => {
 const login = asyncHandler(async(req,res) => {
     const {email, password} = req.body
 
-    User.findOne({email})
-        .then((user) => {
-            res.status(200).json({
-                _id:user._id,
-                name:user.name,
-                email:user.email,
-                imageURL:user.imageURL
-            })
+    //Check if user already exists
+    const user = await User.findOne({email})
+    if(user) {
+        res.status(200).json({
+            _id:user._id,
+            name:user.name,
+            email:user.email,
+            imageURL:user.imageURL
         })
-        .catch((error) => {
-            res.status(401)
-            throw new Error('Invalid user data:'+error.message)
-        })
+        throw new Error('User already exists')
+    }
+    else {
+        res.status(401)
+        throw new Error('User not found!')
+    }
 })
 
 module.exports = {
