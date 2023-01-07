@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const User = require('../models/userModel')
+const url = require('url');
 
 //@desc     Register a new user
 //@route    POST /api/users/register
@@ -62,7 +63,28 @@ const login = asyncHandler(async(req,res) => {
     }
 })
 
+//@desc     Search users
+//@route    GET /api/users/search?name=''
+//@access   Public
+const search = asyncHandler(async(req,res) => {
+ 
+    const queryObject = url.parse(req.url, true).query;
+
+    var username = new RegExp('^.*'+ queryObject.name);
+
+    const userSearch = await User.find({ name: username })
+
+    if(userSearch && userSearch.length > 0) {
+        const userList = userSearch.map(({_id,name,email,imageURL})=>({_id,name,email,imageURL}))
+        res.status(201).json(userList)
+    }  else {
+        res.status(404)
+        throw new Error('User not found')
+    }
+}) 
+
 module.exports = {
     login,
-    register
+    register,
+    search
 }

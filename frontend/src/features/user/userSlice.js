@@ -4,7 +4,8 @@ import userService from "./userService"
 const initialState = {
     user: null,
     isLoading: true,
-    isError: false
+    isError: false,
+    userSearch:null
 }
 
 export const userSlice = createSlice({
@@ -35,6 +36,9 @@ export const userSlice = createSlice({
             .addCase(userService.login.rejected, (state) => {
                 state.isLoading = false
                 state.isError = true
+            })
+            .addCase(userService.search.fulfilled, (state, action) => {
+                state.userSearch = action.payload 
             })
     }
 })

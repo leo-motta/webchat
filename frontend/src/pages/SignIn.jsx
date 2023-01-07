@@ -63,7 +63,7 @@ const SignIn = () => {
                     
                     <button 
                         onClick={() => { navigate('/register') }}
-                        className="bg-violet-500 w-full text-gray-100 text-center font-bold text-lg py-2 rounded hover:bg-violet-600 transition-colors"
+                        className="bg-slate-500 w-full text-gray-100 text-center font-bold text-lg py-2 rounded hover:bg-slate-600 transition-colors"
                     >
                         Create your account!
                     </button>

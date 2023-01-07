@@ -35,9 +35,28 @@ const register = createAsyncThunk(
     }
 )
 
+const asyncUserSearch = async(name) => {
+    // Equivalent to http://localhost:5000/api/users/search?name=t
+    const response = await axios.get('/api/users/search', { params: { name: name } });
+    return response.data
+}
+
+const search = createAsyncThunk(
+    'user/search',
+    async(userData,thunkAPI) => {
+        try {
+            return await asyncUserSearch(userData)
+        } catch(error) {
+            console.log(error.message)     
+            return thunkAPI.rejectWithValue(error.message) 
+        }
+    }
+)
+
 const userService = {
     login,
-    register
+    register,
+    search
 }
 
 export default userService
