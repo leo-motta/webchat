@@ -14,11 +14,9 @@ const Chat = () => {
   const { chats , chat } = useSelector((state) => state.chat)
 
   useEffect(() => {
-    if(!chats) {
-      dispatch(chatService.search(currentUser._id))
-    }
+    dispatch(chatService.search(currentUser._id))
     // eslint-disable-next-line
-  },[chats, chatService, searchState,currentUser])
+  },[searchState, chatService, currentUser])
 
   const onKeyDown = (e) => {
     if (e.code === "Enter") {
