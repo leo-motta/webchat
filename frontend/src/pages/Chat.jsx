@@ -1,16 +1,40 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FaBars } from "react-icons/fa"
 import userService from '../features/user/userService'
+import chatService from '../features/chat/chatService'
 
 const Chat = () => {
   const [nameSearch, setNameSearch] = useState('')
+  const [searchState, setSearchState] = useState(false)
+
   const dispatch = useDispatch()
   const { currentUser , userSearch } = useSelector((state) => state.user)
+  const { chats , chat } = useSelector((state) => state.chat)
+
+  useEffect(() => {
+    if(!chats) {
+      dispatch(chatService.search(currentUser._id))
+    }
+    // eslint-disable-next-line
+  },[chats, chatService, searchState,currentUser])
 
   const onKeyDown = (e) => {
-    e.code === "Enter" && dispatch(userService.search(nameSearch));
+    if (e.code === "Enter") {
+      dispatch(userService.search(nameSearch));
+      setSearchState(true)
+    }
+    if(e.code === "Escape") {
+      setSearchState(false)
+    }
+  }
+
+  const createChat = (anotherUser) => {
+    if(currentUser) {
+      dispatch(chatService.create({this_userid:currentUser._id, another_userid:anotherUser._id}))
+      setSearchState(false)
+    }
   }
 
   return (
@@ -40,11 +64,11 @@ const Chat = () => {
           <div className="flex flex-row">
             <div className="bg-white basis-1/4 h-[34em] min-h-[34em] max-h-[34em] overflow-y-scroll">
 
-            {  (userSearch && userSearch.length !== 0) ? 
+            {  (searchState && userSearch) ? 
                 userSearch
                   .filter((user) => user.name !== currentUser.name)
                   .map((user) => (
-                    <div className=" w-full flex flex-row" key={user._id}>
+                    <div className=" w-full flex flex-row cursor-pointer" key={user._id} onClick={() => { createChat(user) }}>
                       <img className="h-16 w-16 ml-4 my-4 align-center rounded-full" alt="profile" src={user.imageURL} />
                       <div className="flex flex-col my-4">
                         <p className="ml-6 text-xl mb-1">{user.name}</p>
@@ -52,8 +76,23 @@ const Chat = () => {
                       </div>
                     </div>
                   )
-                ) 
-                : <p></p>
+                )
+                : 
+                (chats) ?
+                  chats.map((chat) => {
+                    const user = (chat.firstUser.uid === currentUser._id) ? chat.secondUser : chat.firstUser;
+                    return (
+                      <div className=" w-full flex flex-row cursor-pointer" key={user.uid}>
+                        <img className="h-16 w-16 ml-4 my-4 align-center rounded-full" alt="profile" src={user.imageURL} />
+                        <div className="flex flex-col my-4">
+                          <p className="ml-6 text-xl mb-1">{user.name}</p>
+                          <p className="ml-6 text-xl mb-1">online</p>
+                        </div>
+                      </div>
+                    );
+                  })
+                  :
+                  (<p></p>)
             }
             </div>
 
