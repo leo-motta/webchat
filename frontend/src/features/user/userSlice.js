@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit"
 import userService from "./userService"
 
 const initialState = {
-    user: null,
+    currentUser: null,
     isLoading: true,
     isError: false,
     userSearch:null
@@ -14,7 +14,7 @@ export const userSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(userService.register.fulfilled, (state,action) => {
-                state.user = action.payload
+                state.currentUser = action.payload
                 state.isLoading = false
                 state.isError = false
             })
@@ -26,7 +26,7 @@ export const userSlice = createSlice({
                 state.isError = true
             })
             .addCase(userService.login.fulfilled, (state, action) => {
-                state.user = action.payload
+                state.currentUser = action.payload
                 state.isLoading = false
                 state.isError = false
             })

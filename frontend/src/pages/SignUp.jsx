@@ -7,7 +7,7 @@ import userService from '../features/user/userService'
 const SignUp = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { user , isError } = useSelector((state) => state.user)
+    const { currentUser , isError } = useSelector((state) => state.user)
     const [userFormData, setUserFormData] = useState({
         name:'',
         email:'',
@@ -15,11 +15,11 @@ const SignUp = () => {
     })
 
     useEffect(() => {
-        if(user && !isError) {
+        if(currentUser && !isError) {
           navigate('/chat')
         }
       // eslint-disable-next-line
-    }, [user, isError])
+    }, [currentUser, isError])
 
     const onChange = (e) => {
         setUserFormData((prevState) => ({

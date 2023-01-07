@@ -7,7 +7,7 @@ import userService from '../features/user/userService'
 const Chat = () => {
   const [nameSearch, setNameSearch] = useState('')
   const dispatch = useDispatch()
-  const { user , userSearch } = useSelector((state) => state.user)
+  const { currentUser , userSearch } = useSelector((state) => state.user)
 
   const onKeyDown = (e) => {
     e.code === "Enter" && dispatch(userService.search(nameSearch));
@@ -41,15 +41,18 @@ const Chat = () => {
             <div className="bg-white basis-1/4 h-[34em] min-h-[34em] max-h-[34em] overflow-y-scroll">
 
             {  (userSearch && userSearch.length !== 0) ? 
-                userSearch.map((user) => (
-                  <div className=" w-full flex flex-row" key={user._id}>
-                    <img className="h-16 w-16 ml-4 my-4 align-center rounded-full" alt="profile" src={user.imageURL} />
-                    <div className="flex flex-col my-4">
-                      <p className="ml-6 text-xl mb-1">{user.name}</p>
-                      <p className="ml-6 text-xl mb-1">online</p>
+                userSearch
+                  .filter((user) => user.name !== currentUser.name)
+                  .map((user) => (
+                    <div className=" w-full flex flex-row" key={user._id}>
+                      <img className="h-16 w-16 ml-4 my-4 align-center rounded-full" alt="profile" src={user.imageURL} />
+                      <div className="flex flex-col my-4">
+                        <p className="ml-6 text-xl mb-1">{user.name}</p>
+                        <p className="ml-6 text-xl mb-1">online</p>
+                      </div>
                     </div>
-                  </div>
-                )) 
+                  )
+                ) 
                 : <p></p>
             }
             </div>
