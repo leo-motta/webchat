@@ -2,6 +2,8 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import chatService from '../features/chat/chatService'
+import { FaRegPaperPlane } from "react-icons/fa"
+import { IconContext } from "react-icons";
 
 const Chat = () => {
     const { chat } = useSelector((state) => state.chat)
@@ -13,6 +15,7 @@ const Chat = () => {
         if (currentUser && chat) {
             (currentUser._id === chat.firstUser.uid) ? setChatUser(chat.secondUser) : setChatUser(chat.firstUser)
         }
+    // eslint-disable-next-line
     }, [chat])
 
     return (
@@ -35,7 +38,8 @@ const Chat = () => {
                     )}
             </div>
 
-            <div className="bg-slate-200 h-[34em] min-h-[34em] max-h-[34em] overflow-y-scroll">
+            <div className="bg-slate-200 h-[35em] min-h-[35em] max-h-[35em] overflow-y-scroll relative">
+
                 <div className='flex flex-row'>
                     <div className='max-w-xl rounded bg-slate-700 text-white m-2 pl-4 pr-2 pt-4 pb-1 drop-shadow-sm'>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
@@ -64,6 +68,20 @@ const Chat = () => {
                         <p className='timestamp text-right'>00:00</p>
                     </div>
                 </div>
+                
+            </div>
+            <div >
+                <input
+                    className="absolute w-[40em] h-[2.7em] pl-6 pr-20 border-t-2 border-gray-300 text-2xl leading-4 text-gray-500 outline-none"
+                    placeholder="Write a message"
+                />
+                <button
+                    className="absolute  ml-[56em] bg-red h-[4em] w-10 ml-6"
+                >
+                    <IconContext.Provider value={{ size:"2em", className: "text-slate-500" }}>
+                        <FaRegPaperPlane />
+                    </IconContext.Provider>
+                </button>
             </div>
         </div>
     )
