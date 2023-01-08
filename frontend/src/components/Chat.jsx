@@ -1,15 +1,38 @@
 import React from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import chatService from '../features/chat/chatService'
 
 const Chat = () => {
-    const { chats } = useSelector((state) => state.chat)
+    const { chat } = useSelector((state) => state.chat)
+    const { currentUser } = useSelector((state) => state.user)
+
+    const [chatUser, setChatUser] = useState({})
+
+    useEffect(() => {
+        if (currentUser && chat) {
+            (currentUser._id === chat.firstUser.uid) ? setChatUser(chat.secondUser) : setChatUser(chat.firstUser)
+        }
+    }, [chat])
 
     return (
         <div className="flex flex-col basis-3/4">
             <div className="bg-slate-500 text-white h-24 min-h-24 max-h-24 flex flex-row rounded-tr-lg">
-                <img className="h-16 w-16 ml-4 my-4 align-center rounded-full" alt="profile" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" />
-                <p className="ml-6 text-xl my-8">Someone</p>
+
+                {(chat && chatUser) ?
+                    (
+                        <>
+                            <img className="h-16 w-16 ml-4 my-4 align-center rounded-full" alt="profile" src={chatUser.imageURL} />
+                            <p className="ml-6 text-xl my-8">{chatUser.name}</p>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <img className="h-16 w-16 ml-4 my-4 align-center rounded-full" alt="profile" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" />
+                            <p className="ml-6 text-xl my-8">Someone</p>
+                        </>
+                    )}
             </div>
 
             <div className="bg-slate-200 h-[34em] min-h-[34em] max-h-[34em] overflow-y-scroll">

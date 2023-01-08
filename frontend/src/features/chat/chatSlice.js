@@ -9,6 +9,11 @@ const initialState = {
 export const chatSlice = createSlice({
     name:'chat',
     initialState,
+    reducers: {
+        selectChat: (state, action) => {
+            state.chat = action.payload
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(chatService.search.fulfilled, (state,action) => {
@@ -17,4 +22,5 @@ export const chatSlice = createSlice({
     }
 })
 
+export const { selectChat } = chatSlice.actions
 export default chatSlice.reducer
