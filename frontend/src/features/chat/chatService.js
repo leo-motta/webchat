@@ -34,9 +34,45 @@ const create = createAsyncThunk(
     }
 )
 
+//PUT /api/users/:userid/:chatid/
+const asyncAddMessage = async(userid, chatid, message) => {
+    const response = await axios.put('/api/users/' + userid + '/'+ chatid, { message: message })
+    return response.data
+}
+const addMessage = createAsyncThunk(
+    'chat/addMessage',
+    async (object,thunkAPI) => {
+        try {
+            return await asyncAddMessage(object.userid,object.chatid,object.message)
+        } catch(error) {
+            console.log(error.message)
+            return thunkAPI.rejectWithValue(error.message)
+        }
+    }
+)
+
+//GET /api/chats/:chatid/
+const asyncGetChat = async(chatid) => {
+    const response = await axios.get('/api/chats/' + chatid)
+    return response.data
+}
+const get = createAsyncThunk(
+    'chat/get',
+    async (chatid,thunkAPI) => {
+        try {
+            return await asyncGetChat(chatid)
+        } catch(error) {
+            console.log(error.message)
+            return thunkAPI.rejectWithValue(error.message)
+        }
+    }
+)
+
 const chatService = {
     search,
-    create
+    create,
+    addMessage,
+    get
 }
 
 export default chatService

@@ -19,6 +19,12 @@ export const chatSlice = createSlice({
             .addCase(chatService.search.fulfilled, (state,action) => {
                state.chats = action.payload
             })
+            .addCase(chatService.addMessage.fulfilled, (state, action) => {
+                state.chat = action.payload
+            })
+            .addCase(chatService.get.fulfilled, (state, action) => {
+                state.chat = action.payload
+            })
     }
 })
 

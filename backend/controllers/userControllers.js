@@ -129,7 +129,7 @@ const createChat = asyncHandler(async(req,res) => {
 
     const chatExists = await Chat.find({chatId: chatid })
 
-    if(!chatExists) {
+    if(chatExists.length > 0) {
         res.status(400)
         throw new Error('Cant create chat: already exists')
     }
@@ -159,10 +159,44 @@ const createChat = asyncHandler(async(req,res) => {
     }
 })
 
+//@desc     Adds a message
+//@route    PUT /api/users/:userid/:chatid
+//@access   Public
+const addMessage = asyncHandler(async(req,res) => {
+
+    const userid = req.params.userid
+    const chatid = req.params.chatid
+    const {message} = req.body
+
+    const newMessage = {
+        date: Date.now(),
+        senderId: userid,
+        text:message
+    }
+
+    try {
+        const chat = await Chat.findOneAndUpdate(
+        { chatId: chatid }, 
+        { $push: { 
+                messages: newMessage
+         }
+        },
+        {returnOriginal:false})
+
+        res.status(200).json(chat)
+    }
+    catch(error) {
+        console.log('Update error:'+error.message)
+        res.status(404)
+        throw new Error('Update error!')
+    }
+})
+
 module.exports = {
     login,
     register,
     search,
     getChats,
-    createChat
+    createChat,
+    addMessage
 }
