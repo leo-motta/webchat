@@ -15,7 +15,7 @@ const SignIn = () => {
 
     useEffect(() => {
         if(currentUser && !isError) {
-          navigate('/chat')
+          navigate('/home')
         }
       // eslint-disable-next-line
     }, [currentUser, isError])
