@@ -6,35 +6,36 @@ import userService from '../features/user/userService'
 import chatService from '../features/chat/chatService'
 
 const Sidebar = () => {
-    const [nameSearch, setNameSearch] = useState('')
-    const [searchState, setSearchState] = useState(false)
+    const [searchBox, setSearchBox] = useState('')
+    const [isSearching, setIsSearching] = useState(false)
 
-    const { currentUser , userSearch } = useSelector((state) => state.user)
-    const { chats } = useSelector((state) => state.chat)
+    const { currentUser , userList } = useSelector((state) => state.user)
+    const { chatList } = useSelector((state) => state.chat)
 
     const dispatch = useDispatch()
 
+    //Updates chats List
     useEffect(() => {
         if(currentUser) {
             dispatch(chatService.search(currentUser._id))
         }
       // eslint-disable-next-line
-    },[searchState, chatService, currentUser])
+    },[isSearching, chatService, currentUser])
   
     const onKeyDown = (e) => {
       if (e.code === "Enter") {
-        dispatch(userService.search(nameSearch));
-        setSearchState(true)
+        dispatch(userService.search(searchBox));
+        setIsSearching(true)
       }
       if(e.code === "Escape") {
-        setSearchState(false)
+        setIsSearching(false)
       }
     }
   
     const createChat = (anotherUser) => {
       if(currentUser) {
         dispatch(chatService.create({this_userid:currentUser._id, another_userid:anotherUser._id}))
-        setSearchState(false)
+        setIsSearching(false)
       }
     }
 
@@ -46,14 +47,14 @@ const Sidebar = () => {
                 <input
                     className="w-64 h-10  my-8 p-4 rounded-lg border-2 border-gray-200 text-gray-500 outline-none focus:border-gray-400 transition-colors"
                     placeholder="search for users"
-                    onChange={(e) => setNameSearch(e.target.value)}
+                    onChange={(e) => setSearchBox(e.target.value)}
                     onKeyDown={onKeyDown}
                 />
             </div>
 
             <div className="bg-white h-[39em] min-h-[39em] max-h-[39em] overflow-y-scroll">
-                {(searchState && userSearch) ?
-                    userSearch
+                {(isSearching && userList) ?
+                    userList
                         .filter((user) => user.name !== currentUser.name)
                         .map((user) => (
                             <div className=" w-full flex flex-row cursor-pointer" key={user._id} onClick={() => { createChat(user) }}>
@@ -66,8 +67,8 @@ const Sidebar = () => {
                         )
                         )
                     :
-                    (chats) ?
-                        chats.map((chat) => {
+                    (chatList) ?
+                        chatList.map((chat) => {
                             const user = (chat.firstUser.uid === currentUser._id) ? chat.secondUser : chat.firstUser;
                             return (
                                 <div className=" w-full flex flex-row cursor-pointer" key={user.uid} onClick={() => { dispatch(chatService.get(chat._id)) }}>

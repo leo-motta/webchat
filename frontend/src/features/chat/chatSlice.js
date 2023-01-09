@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit"
 import chatService from "./chatService"
 
 const initialState = {
-    chats: null,
-    chat: null
+    chatList: null,
+    currentChat: null
 }
 
 export const chatSlice = createSlice({
@@ -17,13 +17,13 @@ export const chatSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(chatService.search.fulfilled, (state,action) => {
-               state.chats = action.payload
+               state.chatList = action.payload
             })
             .addCase(chatService.addMessage.fulfilled, (state, action) => {
-                state.chat = action.payload
+                state.currentChat = action.payload
             })
             .addCase(chatService.get.fulfilled, (state, action) => {
-                state.chat = action.payload
+                state.currentChat = action.payload
             })
     }
 })

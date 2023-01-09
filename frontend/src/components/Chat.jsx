@@ -6,25 +6,28 @@ import { FaRegPaperPlane } from "react-icons/fa"
 import { IconContext } from "react-icons";
 
 const Chat = () => {
-    const { chat } = useSelector((state) => state.chat)
+    const { currentChat } = useSelector((state) => state.chat)
     const { currentUser } = useSelector((state) => state.user)
-
-    const dispatch = useDispatch()
 
     const [chatUser, setChatUser] = useState({})
     const [message, setMessage] = useState('')
-    
+
+    const dispatch = useDispatch()
+
     useEffect(() => {
-        if (currentUser && chat) {
-            (currentUser._id === chat.firstUser.uid) ? setChatUser(chat.secondUser) : setChatUser(chat.firstUser)
+        if (currentUser && currentChat) {
+            (currentUser._id === currentChat.firstUser.uid) ?
+                setChatUser(currentChat.secondUser)
+                :
+                setChatUser(currentChat.firstUser)
         }
         // eslint-disable-next-line
-    }, [chat])
+    }, [currentChat])
 
     const sendMessage = () => {
         dispatch(chatService.addMessage({
             userid: currentUser._id,
-            chatid: chat.chatId,
+            chatid: currentChat.chatId,
             message: message
         }))
         dispatch(chatService.search(''))
@@ -36,7 +39,7 @@ const Chat = () => {
         <div className="flex flex-col basis-3/4">
             <div className="bg-slate-500 text-white h-24 min-h-24 max-h-24 flex flex-row rounded-tr-lg">
 
-                {(chat && chatUser) ?
+                {(currentChat && chatUser) ?
                     (
                         <>
                             <img className="h-16 w-16 ml-4 my-4 align-center rounded-full" alt="profile" src={chatUser.imageURL} />
@@ -46,20 +49,18 @@ const Chat = () => {
                     :
                     (
                         <>
-                            <img className="h-16 w-16 ml-4 my-4 align-center rounded-full" alt="profile" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" />
-                            <p className="ml-6 text-xl my-8">Someone</p>
                         </>
                     )}
             </div>
 
             <div className="bg-slate-200 h-[35em] min-h-[35em] max-h-[35em] overflow-y-scroll relative">
                 {
-                    (chat && chat.messages && chat.messages.length > 1) &&
-                    chat.messages
+                    (currentChat && currentChat.messages && currentChat.messages.length > 1) &&
+                    currentChat.messages
                         .filter((message) => message.text !== '')
                         .map((message) => {
                             const classVar = (message.senderId === currentUser._id) ? 'flex flex-row-reverse' : 'flex flex-row'
-                            const date = new Date(message.date).toLocaleTimeString().substring(0,5)
+                            const date = new Date(message.date).toLocaleTimeString().substring(0, 5)
                             return (
                                 <div className={classVar} key={message._id}>
                                     <div className='min-w-[6em] max-width-xl rounded bg-slate-700 text-white  m-2 px-2 pt-4 pb-1 drop-shadow-sm'>

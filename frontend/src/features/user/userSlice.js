@@ -2,10 +2,10 @@ import { createSlice } from "@reduxjs/toolkit"
 import userService from "./userService"
 
 const initialState = {
+    userList:null,
     currentUser: null,
     isLoading: true,
     isError: false,
-    userSearch:null
 }
 
 export const userSlice = createSlice({
@@ -38,7 +38,7 @@ export const userSlice = createSlice({
                 state.isError = true
             })
             .addCase(userService.search.fulfilled, (state, action) => {
-                state.userSearch = action.payload 
+                state.userList = action.payload 
             })
     }
 })
