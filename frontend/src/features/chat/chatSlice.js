@@ -11,7 +11,7 @@ export const chatSlice = createSlice({
     initialState,
     reducers: {
         selectChat: (state, action) => {
-            state.chat = action.payload
+            state.currentChat = action.payload
         }
     },
     extraReducers: (builder) => {

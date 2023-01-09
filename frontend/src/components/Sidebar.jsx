@@ -14,7 +14,7 @@ const Sidebar = () => {
 
     const dispatch = useDispatch()
 
-    //Updates chats List
+    //Updates chatList
     useEffect(() => {
         if(currentUser) {
             dispatch(chatService.search(currentUser._id))
@@ -60,8 +60,8 @@ const Sidebar = () => {
                             <div className=" w-full flex flex-row cursor-pointer" key={user._id} onClick={() => { createChat(user) }}>
                                 <img className="h-16 w-16 ml-4 my-4 align-center rounded-full" alt="profile" src={user.imageURL} />
                                 <div className="flex flex-col my-4">
-                                    <p className="ml-6 text-xl truncate w-48 mb-1">{user.name}</p>
-                                    <p className="ml-6 truncate w-48 mb-1">online</p>
+                                    <p className="ml-6 text-xl truncate w-36 mb-1">{user.name}</p>
+                                    <p className="ml-6 truncate w-36 mb-1">online</p>
                                 </div>
                             </div>
                         )
@@ -74,8 +74,8 @@ const Sidebar = () => {
                                 <div className=" w-full flex flex-row cursor-pointer" key={user.uid} onClick={() => { dispatch(chatService.get(chat._id)) }}>
                                     <img className="h-16 w-16 ml-4 my-4 align-center rounded-full" alt="profile" src={user.imageURL} />
                                     <div className="flex flex-col my-4 max-w-2">
-                                        <p className="ml-6 text-xl truncate w-48 mb-1">{user.name}</p>
-                                        <p className="ml-6 truncate w-48 mb-1">{chat.lastMessage}</p>
+                                        <p className="ml-6 text-xl truncate w-36 mb-1">{user.name}</p>
+                                        <p className="ml-6 truncate w-36 mb-1">{chat.lastMessage}</p>
                                     </div>
                                 </div>
                             );

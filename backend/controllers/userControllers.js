@@ -137,7 +137,7 @@ const createChat = asyncHandler(async(req,res) => {
     const chat = await Chat.create({
         chatId: chatid,
         date: Date.now(),
-        lastMessage:'last message',
+        lastMessage:'write a message',
         firstUser: {
             uid: thisUser._id,
             name: thisUser.name,
@@ -177,9 +177,13 @@ const addMessage = asyncHandler(async(req,res) => {
     try {
         const chat = await Chat.findOneAndUpdate(
         { chatId: chatid }, 
-        { $push: { 
+        {
+            $set: {
+                lastMessage: newMessage.text
+            },
+            $push: { 
                 messages: newMessage
-         }
+            }
         },
         {returnOriginal:false})
 
