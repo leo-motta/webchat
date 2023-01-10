@@ -59,7 +59,7 @@ const Sidebar = () => {
                 {
                     (openOptions) ? 
                     <SidebarProfileOptions /> :
-                    <SidebarContent search={isSearching} changeIsSearching={changeIsSearching} />
+                    <SidebarContent isSearching={isSearching} changeIsSearching={changeIsSearching} />
                 }
             </div>
         </div>
