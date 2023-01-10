@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import chatService from '../features/chat/chatService'
 import { FaRegPaperPlane } from "react-icons/fa"
-import { IconContext } from "react-icons";
+import { IconContext } from "react-icons"
 
 const Chat = () => {
     const { currentChat } = useSelector((state) => state.chat)

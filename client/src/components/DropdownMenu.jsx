@@ -16,8 +16,6 @@ const DropdownMenu = (props) => {
         } else {
             setProfileText('Profile')
         }
-        //(props.openOptions) ? setProfileText('Chat') : setProfileText('Profile')
-
     }, [props.openOptions])
 
     return (
@@ -31,7 +29,7 @@ const DropdownMenu = (props) => {
                         <a 
                             href="#/"
                             className="flex flex-row  px-4 py-2 pb-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                            onClick={() => {props.setOpenOptions(!props.openOptions)}}>
+                            onClick={() => {props.changeOptions(!props.openOptions)}}>
                         <IconContext.Provider value={{ size: "1.5em", className: " pr-2" }}>
                             {(props.openOptions) ? <BsFillChatFill /> : <BsGearFill/> }
                         </IconContext.Provider> {profileText}
