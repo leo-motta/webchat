@@ -84,24 +84,6 @@ const search = asyncHandler(async(req,res) => {
     }
 }) 
 
-//@desc     Get chats
-//@route    GET /api/users/:userid/chats
-//@access   Public
-const getChats = asyncHandler(async(req,res) => {
-
-    var regex = new RegExp('^.*'+ req.params.userid);
-
-    const chat = await Chat.find({chatId: regex })
-
-    if(chat) {
-        res.status(201).json(chat)
-    } else {
-        res.status(404)
-        throw new Error('No chats found')
-    }
-})
-
-
 //@desc     Creates a chat
 //@route    POST /api/users/:userid/chats
 //@access   Public
@@ -159,6 +141,25 @@ const createChat = asyncHandler(async(req,res) => {
     }
 })
 
+//@desc     Get chats
+//@route    GET /api/users/:userid/chats
+//@access   Public
+const getChats = asyncHandler(async(req,res) => {
+
+    var regex = new RegExp('^.*'+ req.params.userid);
+
+    const chat = await Chat.find({chatId: regex })
+
+    if(chat) {
+        res.status(201).json(chat)
+    } else {
+        res.status(404)
+        throw new Error('No chats found')
+    }
+})
+
+
+
 //@desc     Adds a message
 //@route    PUT /api/users/:userid/:chatid
 //@access   Public
@@ -197,10 +198,10 @@ const addMessage = asyncHandler(async(req,res) => {
 })
 
 module.exports = {
-    login,
     register,
+    login,
     search,
-    getChats,
     createChat,
+    getChats,
     addMessage
 }
