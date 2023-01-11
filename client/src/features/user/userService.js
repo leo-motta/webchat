@@ -1,11 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
 
+//POST /api/users/register
 const asyncRegisterUser = async(userData) => {
     const response = await axios.post('/api/users/register', userData)
     return response.data
 }
-
 const register = createAsyncThunk(
     'user/register',
     async(userData,thunkAPI) => {
@@ -18,11 +18,11 @@ const register = createAsyncThunk(
     }
 )
 
+//POST /api/users/login
 const asyncLoginUser = async(userData) => {
     const response = await axios.post('/api/users/login', userData)
     return response.data
 }
-
 const login = createAsyncThunk(
     'user/login',
     async(userData,thunkAPI) => {
@@ -35,12 +35,11 @@ const login = createAsyncThunk(
     }
 )
 
+//GET /api/users/search?name=''
 const asyncUserSearch = async(name) => {
-    // Equivalent to http://localhost:5000/api/users/search?name=t
     const response = await axios.get('/api/users/search', { params: { name: name } });
     return response.data
 }
-
 const search = createAsyncThunk(
     'user/search',
     async(userData,thunkAPI) => {

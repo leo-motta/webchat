@@ -1,9 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
 
-//POST /api/users/:userid/chats/
+//POST /api/chats/create
 const asyncCreateChat = async(userid, anotherid) => {
-    const response = await axios.post('/api/users/' + userid + '/chats', { another_userid: anotherid })
+    const response = await axios.post('/api/chats/create', { this_userid: userid ,another_userid: anotherid })
     return response.data
 }
 const create = createAsyncThunk(
@@ -18,7 +18,7 @@ const create = createAsyncThunk(
     }
 )
 
-//GET /api/chats/:chatid/
+//GET /api/chats/:chatid
 const asyncGetChat = async(chatid) => {
     const response = await axios.get('/api/chats/' + chatid)
     return response.data
@@ -28,23 +28,6 @@ const get = createAsyncThunk(
     async (chatid,thunkAPI) => {
         try {
             return await asyncGetChat(chatid)
-        } catch(error) {
-            console.log(error.message)
-            return thunkAPI.rejectWithValue(error.message)
-        }
-    }
-)
-
-//PUT /api/users/:userid/:chatid/
-const asyncAddMessage = async(userid, chatid, message) => {
-    const response = await axios.put('/api/users/' + userid + '/'+ chatid, { message: message })
-    return response.data
-}
-const addMessage = createAsyncThunk(
-    'chat/addMessage',
-    async (object,thunkAPI) => {
-        try {
-            return await asyncAddMessage(object.userid,object.chatid,object.message)
         } catch(error) {
             console.log(error.message)
             return thunkAPI.rejectWithValue(error.message)
@@ -68,11 +51,29 @@ const search = createAsyncThunk(
     }
 )
 
+//PUT /api/chats/:chatid
+const asyncAddMessage = async(userid, chatid, message) => {
+    const response = await axios.put('/api/chats/'+ chatid, { userid: userid, message: message })
+    return response.data
+}
+const addMessage = createAsyncThunk(
+    'chat/addMessage',
+    async (object,thunkAPI) => {
+        try {
+            return await asyncAddMessage(object.userid,object.chatid,object.message)
+        } catch(error) {
+            console.log(error.message)
+            return thunkAPI.rejectWithValue(error.message)
+        }
+    }
+)
+
 const chatService = {
     create,
     get,
+    search,
     addMessage,
-    search
+    
 }
 
 export default chatService
