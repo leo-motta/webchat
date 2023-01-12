@@ -43,7 +43,7 @@ const Chat = () => {
                 {(currentChat && chatUser) ?
                     (
                         <>
-                            <img className="h-16 w-16 ml-4 my-4 align-center rounded-full" alt="profile" src={chatUser.imageURL} />
+                            <img className="object-cover bg-black h-16 w-16 ml-4 my-4 align-center rounded-full" alt="profile" src={chatUser.imageURL} />
                             <p className="ml-6 text-xl my-8">{chatUser.name}</p>
                         </>
                     )

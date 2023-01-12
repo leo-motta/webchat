@@ -1,14 +1,19 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import userService from '../features/user/userService'
 
-const SidebarProfileOptions = () => {
-    const [profileOptionsForm, setProfileOptionsForm] = useState({ name: '', email: '', password: '', imageURL: '' })
+const SidebarProfileOptions = (props) => {
+    const [formData, setFormData] = useState({ id:'', name: '', email: '', password: '', imageURL: '' })
     const { currentUser } = useSelector((state) => state.user)
-    //Updates profileOptionsForm
+
+    const dispatch = useDispatch()
+
+    //Updates formData
     useEffect(() => {
         if (currentUser) {
-            setProfileOptionsForm({
+            setFormData({
+                id:currentUser._id,
                 name: currentUser.name,
                 email: currentUser.email,
                 password: (currentUser.password) ? currentUser.password : '123456',
@@ -18,15 +23,26 @@ const SidebarProfileOptions = () => {
     }, [currentUser])
 
     const onChange = (e) => {
-        setProfileOptionsForm((prevState) => ({
+        setFormData((prevState) => ({
             ...prevState,
             [e.target.name]: e.target.value
         }))
     }
 
+    const updateUser = (e) => {
+        e.preventDefault()
+        try {
+            dispatch(userService.update(formData))
+            props.changeOptions(false)
+        }
+        catch (err) {
+            console.log(`Sign in Error: ${err.message}`)
+        }
+    }
+
     return (
         <div className="flex flex-col rounded border-2 border-gray-100 p-6 ml-4">
-            <img className="h-16 w-16 mb-3 mx-20 rounded-full" alt="profile" src={currentUser.imageURL} />
+            <img className="object-cover bg-black h-16 w-16 mb-3 mx-20 rounded-full" alt="profile" src={currentUser.imageURL} />
 
             <label 
                 htmlFor="user"
@@ -39,7 +55,7 @@ const SidebarProfileOptions = () => {
                 type="text"
                 placeholder="Change your name"
                 onChange={onChange}
-                value={profileOptionsForm.name}
+                value={formData.name}
             />
             
             <label 
@@ -53,7 +69,7 @@ const SidebarProfileOptions = () => {
                 name="email"
                 placeholder="Change your email"
                 onChange={onChange}
-                value={profileOptionsForm.email}
+                value={formData.email}
             />
 
             <label 
@@ -67,7 +83,7 @@ const SidebarProfileOptions = () => {
                 name="password"
                 placeholder="Change your password"
                 onChange={onChange}
-                value={profileOptionsForm.password}
+                value={formData.password}
             />
 
             <label 
@@ -81,11 +97,11 @@ const SidebarProfileOptions = () => {
                 name="imageURL"
                 placeholder="Change your image URL"
                 onChange={onChange}
-                value={profileOptionsForm.imageURL}
+                value={formData.imageURL}
             />
 
             <button 
-                onClick={() => console.log(profileOptionsForm)} 
+                onClick={updateUser}
                 className="bg-white border-2 border-indigo-500 w-full font-bold text-indigo-500 text-lg py-2 mb-4 rounded hover:text-white hover:bg-indigo-600 transition-colors"
             >Update User
             </button>

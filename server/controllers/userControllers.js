@@ -85,6 +85,36 @@ const search = asyncHandler(async(req,res) => {
     }
 }) 
 
+//@desc     Update a user
+//@route    PUT /api/users/:userid
+//@access   Public
+const update = asyncHandler(async(req,res) => {
+    const userid = req.params.userid
+    const { name, email, password, imageURL } = req.body
+    const updatedAt = new Date().toISOString()
+    try {
+        const user = await User.findByIdAndUpdate(
+        userid,
+        {
+            $set: {
+                name: name,
+                email: email,
+                password: password,
+                imageURL: imageURL,
+                updatedAt: updatedAt
+            }
+        },
+        { returnOriginal:false})
+
+        res.status(200).json(user)
+    }
+    catch(error) {
+        console.log('Update error:'+error.message)
+        res.status(404)
+        throw new Error('Update error!')
+    }
+})
+
 //@desc     Retrieve user chats
 //@route    GET /api/users/:userid/chats
 //@access   Public
@@ -106,5 +136,6 @@ module.exports = {
     register,
     login,
     search,
+    update,
     getUserChats
 }

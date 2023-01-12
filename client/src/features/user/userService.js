@@ -52,10 +52,28 @@ const search = createAsyncThunk(
     }
 )
 
+//PUT /api/users/:userid
+const asyncUpdateUser = async(userData) => {
+    const response = await axios.put('/api/users/' + userData.id, userData);
+    return response.data
+}
+const update = createAsyncThunk(
+    'user/update',
+    async(userData, thunkAPI) => {
+        try {
+            return await asyncUpdateUser(userData)
+        } catch(error) {
+            console.log(error.message)     
+            return thunkAPI.rejectWithValue(error.message) 
+        }
+    }
+)
+
 const userService = {
     register,
     login,
-    search
+    search,
+    update
 }
 
 export default userService

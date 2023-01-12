@@ -58,7 +58,7 @@ const Sidebar = () => {
             <div className="bg-white h-[39em] min-h-[39em] max-h-[39em] overflow-y-scroll">
                 {
                     (openOptions) ? 
-                    <SidebarProfileOptions /> :
+                    <SidebarProfileOptions changeOptions={changeOptions}/> :
                     <SidebarContent isSearching={isSearching} changeIsSearching={changeIsSearching} />
                 }
             </div>

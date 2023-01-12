@@ -40,6 +40,9 @@ export const userSlice = createSlice({
             .addCase(userService.search.fulfilled, (state, action) => {
                 state.userList = action.payload 
             })
+            .addCase(userService.update.fulfilled, (state, action) => {
+                state.currentUser = action.payload
+            })
     }
 })
 
