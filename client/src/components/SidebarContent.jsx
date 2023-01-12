@@ -1,12 +1,33 @@
-import React from 'react'
+import React,{ useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import userService from '../features/user/userService'
 import chatService from '../features/chat/chatService'
 
 const SidebarContent = (props) => {
+    const [chatUserList, setChatUserList] = useState([])
+
     const { currentUser, userList } = useSelector((state) => state.user)
     const { chatList } = useSelector((state) => state.chat)
 
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (chatList) {
+            setChatUserList([])
+            chatList.forEach((chat) => {
+                const userid = (chat.users[0].uid === currentUser._id) ? chat.users[1].uid : chat.users[0].uid
+
+                dispatch(userService.get(userid))
+                    .then((data) => {
+                        const newUser = data.payload
+                        newUser.chatId = chat._id
+                        newUser.lastMessage = chat.lastMessage
+                        setChatUserList((state) => ([...state, newUser])) 
+                    })
+            })
+        }
+    // eslint-disable-next-line
+    }, [chatList, currentUser._id])
 
     const createChat = (anotherUser) => {
         if (currentUser) {
@@ -16,33 +37,29 @@ const SidebarContent = (props) => {
     }
 
     return (
-        (props.isSearching && userList) ?
+        (props.isSearching && userList && userList.length > 0) ?
             userList
                 .filter((user) => user.name !== currentUser.name)
                 .map((user) => (
                     <div className=" w-full flex flex-row cursor-pointer" key={user._id} onClick={() => { createChat(user) }}>
-                        <img className="object-cover bg-black h-16 w-16 ml-4 my-4 align-center rounded-full" alt="profile" src={user.imageURL} />
+                        <img className="object-cover bg-white h-16 w-16 ml-4 my-4 align-center rounded-full" alt="profile" src={user.imageURL} />
                         <div className="flex flex-col my-4">
                             <p className="ml-6 text-xl truncate w-36 mb-1">{user.name}</p>
                             <p className="ml-6 truncate w-36 mb-1">online</p>
                         </div>
                     </div>
-                )
-                )
+            ))
             :
-            (chatList) ?
-                chatList.map((chat) => {
-                    const user = (chat.users[0].uid === currentUser._id) ? chat.users[1] : chat.users[0];
-                    return (
-                        <div className=" w-full flex flex-row cursor-pointer" key={user.uid} onClick={() => { dispatch(chatService.get(chat._id)) }}>
-                            <img className="object-cover bg-black h-16 w-16 ml-4 my-4 align-center rounded-full" alt="profile" src={user.imageURL} />
+            (chatUserList) ?
+                chatUserList.map((chatUser) => (
+                        <div className=" w-full flex flex-row cursor-pointer" key={chatUser._id} onClick={() => { dispatch(chatService.get(chatUser.chatId)) }}>
+                            <img className="object-cover bg-white h-16 w-16 ml-4 my-4 align-center rounded-full" alt="profile" src={chatUser.imageURL} />
                             <div className="flex flex-col my-4 max-w-2">
-                                <p className="ml-6 text-xl truncate w-36 mb-1">{user.name}</p>
-                                <p className="ml-6 truncate w-36 mb-1">{chat.lastMessage}</p>
+                                <p className="ml-6 text-xl truncate w-36 mb-1">{chatUser.name}</p>
+                                <p className="ml-6 truncate w-36 mb-1">{chatUser.lastMessage}</p>
                             </div>
                         </div>
-                    );
-                })
+                ))
                 :
                 (<p></p>)
     )

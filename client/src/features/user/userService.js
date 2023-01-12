@@ -35,16 +35,33 @@ const login = createAsyncThunk(
     }
 )
 
+//GET /api/users/:userid
+const asyncGetUser = async(userid) => {
+    const response = await axios.get('/api/users/' + userid)
+    return response.data
+}
+const get = createAsyncThunk(
+    'user/get',
+    async(userid, thunkAPI) => {
+        try {
+            return await asyncGetUser(userid)
+        } catch(error) {
+            console.log(error.message)     
+            return thunkAPI.rejectWithValue(error.message) 
+        }
+    }
+)
+
 //GET /api/users/search?name=''
 const asyncUserSearch = async(name) => {
-    const response = await axios.get('/api/users/search', { params: { name: name } });
+    const response = await axios.get('/api/users/search', { params: { name: name } })
     return response.data
 }
 const search = createAsyncThunk(
     'user/search',
-    async(userData,thunkAPI) => {
+    async(name,thunkAPI) => {
         try {
-            return await asyncUserSearch(userData)
+            return await asyncUserSearch(name)
         } catch(error) {
             console.log(error.message)     
             return thunkAPI.rejectWithValue(error.message) 
@@ -72,6 +89,7 @@ const update = createAsyncThunk(
 const userService = {
     register,
     login,
+    get,
     search,
     update
 }

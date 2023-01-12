@@ -65,11 +65,27 @@ const login = asyncHandler(async(req,res) => {
     }
 })
 
+//@desc     Retrieve a single user
+//@route    GET /api/users/:userid
+//@access   Public
+const get = asyncHandler(async(req,res) => {
+    const userid = req.params.userid
+
+    const user = await User.findById(userid)
+
+    if(user) {
+        res.status(200).json(user)
+    } else {
+        res.status(404)
+        throw new Error('User not found!')
+    }
+})
+
 //@desc     Search users
 //@route    GET /api/users/search?name=''
 //@access   Public
 const search = asyncHandler(async(req,res) => {
- 
+
     const queryObject = url.parse(req.url, true).query;
 
     var username = new RegExp('^.*'+ queryObject.name);
@@ -78,12 +94,13 @@ const search = asyncHandler(async(req,res) => {
 
     if(userSearch && userSearch.length > 0) {
         const userList = userSearch.map(({_id,name,email,imageURL})=>({_id,name,email,imageURL}))
-        res.status(201).json(userList)
+
+        res.status(200).json(userList)
     }  else {
         res.status(404)
         throw new Error('User not found')
     }
-}) 
+})
 
 //@desc     Update a user
 //@route    PUT /api/users/:userid
@@ -125,7 +142,7 @@ const getUserChats = asyncHandler(async(req,res) => {
     const chat = await Chat.find({chatId: regex })
 
     if(chat) {
-        res.status(201).json(chat)
+        res.status(200).json(chat)
     } else {
         res.status(404)
         throw new Error('No chats found')
@@ -135,6 +152,7 @@ const getUserChats = asyncHandler(async(req,res) => {
 module.exports = {
     register,
     login,
+    get,
     search,
     update,
     getUserChats

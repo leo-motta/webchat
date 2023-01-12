@@ -27,7 +27,7 @@ const Sidebar = () => {
 
     const onKeyDown = (e) => {
         if (e.code === "Enter") {
-            dispatch(userService.search(searchBox));
+            dispatch(userService.search(searchBox))
             setIsSearching(true)
         }
         if (e.code === "Escape") {
@@ -52,6 +52,7 @@ const Sidebar = () => {
                     placeholder="search for users"
                     onChange={(e) => setSearchBox(e.target.value)}
                     onKeyDown={onKeyDown}
+                    value={searchBox}
                 />
             </div>
 

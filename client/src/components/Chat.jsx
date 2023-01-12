@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import userService from '../features/user/userService'
 import chatService from '../features/chat/chatService'
 import { FaRegPaperPlane } from "react-icons/fa"
 import { IconContext } from "react-icons"
@@ -17,9 +18,9 @@ const Chat = () => {
     useEffect(() => {
         if (currentUser && currentChat) {
             (currentUser._id === currentChat.users[0].uid) ?
-                setChatUser(currentChat.users[1])
+                dispatch(userService.get(currentChat.users[1].uid)).then((data) => {setChatUser(data.payload)})
                 :
-                setChatUser(currentChat.users[0])
+                dispatch(userService.get(currentChat.users[0].uid)).then((data) => {setChatUser(data.payload)})
         }
         // eslint-disable-next-line
     }, [currentChat])
@@ -30,7 +31,6 @@ const Chat = () => {
             chatid: currentChat.chatId,
             message: message
         }))
-        //dispatch(chatService.search(''))
         dispatch(chatService.search(currentUser._id))
         setMessage('')
     }
@@ -43,7 +43,7 @@ const Chat = () => {
                 {(currentChat && chatUser) ?
                     (
                         <>
-                            <img className="object-cover bg-black h-16 w-16 ml-4 my-4 align-center rounded-full" alt="profile" src={chatUser.imageURL} />
+                            <img className="object-cover bg-white h-16 w-16 ml-4 my-4 align-center rounded-full" alt="profile" src={chatUser.imageURL} />
                             <p className="ml-6 text-xl my-8">{chatUser.name}</p>
                         </>
                     )

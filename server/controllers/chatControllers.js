@@ -67,7 +67,7 @@ const get = asyncHandler(async(req,res) => {
     const chat = await Chat.findById(chatid)
 
     if(chat) {
-        res.status(201).json(chat)
+        res.status(200).json(chat)
     } else {
         res.status(404)
         throw new Error('Chat not found!')

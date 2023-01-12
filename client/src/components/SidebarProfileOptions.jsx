@@ -42,7 +42,7 @@ const SidebarProfileOptions = (props) => {
 
     return (
         <div className="flex flex-col rounded border-2 border-gray-100 p-6 ml-4">
-            <img className="object-cover bg-black h-16 w-16 mb-3 mx-20 rounded-full" alt="profile" src={currentUser.imageURL} />
+            <img className="object-cover bg-white h-16 w-16 mb-3 mx-20 rounded-full" alt="profile" src={currentUser.imageURL} />
 
             <label 
                 htmlFor="user"
