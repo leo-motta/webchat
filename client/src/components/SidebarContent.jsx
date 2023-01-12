@@ -32,7 +32,7 @@ const SidebarContent = (props) => {
             :
             (chatList) ?
                 chatList.map((chat) => {
-                    const user = (chat.firstUser.uid === currentUser._id) ? chat.secondUser : chat.firstUser;
+                    const user = (chat.users[0].uid === currentUser._id) ? chat.users[1] : chat.users[0];
                     return (
                         <div className=" w-full flex flex-row cursor-pointer" key={user.uid} onClick={() => { dispatch(chatService.get(chat._id)) }}>
                             <img className="h-16 w-16 ml-4 my-4 align-center rounded-full" alt="profile" src={user.imageURL} />

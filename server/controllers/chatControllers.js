@@ -37,16 +37,16 @@ const create = asyncHandler(async(req,res) => {
         chatId: chatid,
         date: Date.now(),
         lastMessage:'write a message',
-        firstUser: {
+        users: [{
             uid: thisUser._id,
             name: thisUser.name,
             imageURL: thisUser.imageURL
         },
-        secondUser: {
+        {
             uid: anotherUser._id,
             name: anotherUser.name,
             imageURL: anotherUser.imageURL
-        },
+        }],
         messages:{}
     })
 

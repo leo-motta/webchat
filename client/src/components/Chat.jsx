@@ -16,10 +16,10 @@ const Chat = () => {
 
     useEffect(() => {
         if (currentUser && currentChat) {
-            (currentUser._id === currentChat.firstUser.uid) ?
-                setChatUser(currentChat.secondUser)
+            (currentUser._id === currentChat.users[0].uid) ?
+                setChatUser(currentChat.users[1])
                 :
-                setChatUser(currentChat.firstUser)
+                setChatUser(currentChat.users[0])
         }
         // eslint-disable-next-line
     }, [currentChat])

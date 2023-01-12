@@ -45,8 +45,7 @@ const chatSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    firstUser: userInfo,
-    secondUser: userInfo,
+    users: [userInfo],
     messages: [messages]
 })
 
