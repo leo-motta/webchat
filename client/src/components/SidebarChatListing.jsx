@@ -54,7 +54,7 @@ const SidebarChatListing = (props) => {
                 chatUserList
                     .sort((a, b) => { return new Date(b.lastMessage.date) - new Date(a.lastMessage.date) })
                     .map((chatUser) => {
-                        const chatListingClassName = (chatUser.chatId === currentChat.chatId ) ? "border-l-4 border-sky-400 w-full flex flex-row cursor-pointer" : "w-full flex flex-row cursor-pointer"
+                        const chatListingClassName = (chatUser && currentChat && chatUser.chatId === currentChat.chatId ) ? "border-l-4 border-sky-400 w-full flex flex-row cursor-pointer" : "w-full flex flex-row cursor-pointer"
                         return (
                             <div className={chatListingClassName} key={chatUser._id} onClick={() => { dispatch(chatService.get(chatUser.chatId)) }}>
                                 <img className="object-cover bg-white h-16 w-16 ml-4 my-4 align-center rounded-full" alt="profile" src={chatUser.imageURL} />
