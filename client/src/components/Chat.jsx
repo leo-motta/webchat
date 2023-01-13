@@ -64,7 +64,7 @@ const Chat = () => {
                             const date = new Date(message.date).toLocaleTimeString().substring(0, 5)
                             return (
                                 <div className={classVar} key={message._id}>
-                                    <div className='min-w-[6em] max-w-[26em]  rounded bg-slate-700 text-white  m-2 px-2 pt-4 pb-1 drop-shadow-sm'>
+                                    <div className='min-w-[6em] max-w-[26em] rounded bg-slate-700 text-white  m-2 px-2 pt-4 pb-1 drop-shadow-sm'>
                                         <p className='px-1 text-lg break-words'>{message.text}</p>
                                         <p className='timestamp text-right text-sm text-gray-400'>{date}</p>
                                     </div>

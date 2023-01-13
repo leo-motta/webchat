@@ -36,7 +36,9 @@ const create = asyncHandler(async(req,res) => {
     const chat = await Chat.create({
         chatId: chatid,
         date: Date.now(),
-        lastMessage:'write a message',
+        lastMessage:{
+            text:"Send a message!"
+        },
         users: [{
             uid: thisUser._id,
             name: thisUser.name,
@@ -61,11 +63,11 @@ const create = asyncHandler(async(req,res) => {
 //@desc     Retrieve a single chat
 //@route    GET /api/chats/:chatid
 //@access   Public
-const get = asyncHandler(async(req,res) => {
+const get = asyncHandler(async(req,res) => 
+{
     const chatid = req.params.chatid
 
-    const chat = await Chat.findById(chatid)
-
+    const chat = await Chat.findOne({ chatId: chatid })
     if(chat) {
         res.status(200).json(chat)
     } else {
@@ -92,7 +94,7 @@ const addMessage = asyncHandler(async(req,res) => {
         { chatId: chatid }, 
         {
             $set: {
-                lastMessage: newMessage.text
+                lastMessage: newMessage
             },
             $push: { 
                 messages: newMessage

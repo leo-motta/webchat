@@ -15,7 +15,7 @@ const userInfo = mongoose.Schema({
     }
 })
 
-const messages = mongoose.Schema({
+const message = mongoose.Schema({
     date: {
         type: Date,
         default: Date.now()
@@ -41,12 +41,9 @@ const chatSchema = mongoose.Schema({
         required: [true, 'Please add a date'],
         default: Date.now()
     },
-    lastMessage: {
-        type: String,
-        required: true,
-    },
+    lastMessage: message,
     users: [userInfo],
-    messages: [messages]
+    messages: [message]
 })
 
 module.exports = mongoose.model('Chat', chatSchema)

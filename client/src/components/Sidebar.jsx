@@ -5,7 +5,7 @@ import userService from '../features/user/userService'
 import chatService from '../features/chat/chatService'
 import DropdownMenu from './DropdownMenu'
 import SidebarProfileOptions from './SidebarProfileOptions'
-import SidebarContent from './SidebarContent'
+import SidebarChatListing from './SidebarChatListing'
 
 const Sidebar = () => {
     const [searchBox, setSearchBox] = useState('')
@@ -60,7 +60,7 @@ const Sidebar = () => {
                 {
                     (openOptions) ? 
                     <SidebarProfileOptions changeOptions={changeOptions}/> :
-                    <SidebarContent isSearching={isSearching} changeIsSearching={changeIsSearching} />
+                    <SidebarChatListing isSearching={isSearching} changeIsSearching={changeIsSearching} />
                 }
             </div>
         </div>
