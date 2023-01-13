@@ -12,7 +12,7 @@ const SidebarContent = (props) => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (chatList) {
+        if (currentUser && chatList) {
             setChatUserList([])
             chatList.forEach((chat) => {
                 const userid = (chat.users[0].uid === currentUser._id) ? chat.users[1].uid : chat.users[0].uid
@@ -27,7 +27,7 @@ const SidebarContent = (props) => {
             })
         }
     // eslint-disable-next-line
-    }, [chatList, currentUser._id])
+    }, [chatList, currentUser])
 
     const createChat = (anotherUser) => {
         if (currentUser) {

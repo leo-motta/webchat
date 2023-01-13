@@ -5,6 +5,7 @@ import userService from '../features/user/userService'
 
 const SidebarProfileOptions = (props) => {
     const [formData, setFormData] = useState({ id:'', name: '', email: '', password: '', imageURL: '' })
+
     const { currentUser } = useSelector((state) => state.user)
 
     const dispatch = useDispatch()
@@ -34,6 +35,18 @@ const SidebarProfileOptions = (props) => {
         try {
             dispatch(userService.update(formData))
             props.changeOptions(false)
+        }
+        catch (err) {
+            console.log(`Sign in Error: ${err.message}`)
+        }
+    }
+    
+    const removeUser = (e) => {
+        e.preventDefault()
+        try {
+            dispatch(userService.remove(formData.id))
+            props.changeOptions(false)
+            //Todo: navigate back to SignIn page
         }
         catch (err) {
             console.log(`Sign in Error: ${err.message}`)
@@ -107,6 +120,7 @@ const SidebarProfileOptions = (props) => {
             </button>
 
             <button 
+                onClick={removeUser}
                 className="bg-white border-2 border-red-500 w-full font-bold text-red-500 text-lg py-2 mb-3 rounded hover:text-white hover:bg-red-600 transition-colors"
             >
                 Delete User

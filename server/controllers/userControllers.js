@@ -65,22 +65,6 @@ const login = asyncHandler(async(req,res) => {
     }
 })
 
-//@desc     Retrieve a single user
-//@route    GET /api/users/:userid
-//@access   Public
-const get = asyncHandler(async(req,res) => {
-    const userid = req.params.userid
-
-    const user = await User.findById(userid)
-
-    if(user) {
-        res.status(200).json(user)
-    } else {
-        res.status(404)
-        throw new Error('User not found!')
-    }
-})
-
 //@desc     Search users
 //@route    GET /api/users/search?name=''
 //@access   Public
@@ -99,6 +83,22 @@ const search = asyncHandler(async(req,res) => {
     }  else {
         res.status(404)
         throw new Error('User not found')
+    }
+})
+
+//@desc     Retrieve a single user
+//@route    GET /api/users/:userid
+//@access   Public
+const get = asyncHandler(async(req,res) => {
+    const userid = req.params.userid
+
+    const user = await User.findById(userid)
+
+    if(user) {
+        res.status(200).json(user)
+    } else {
+        res.status(404)
+        throw new Error('User not found!')
     }
 })
 
@@ -127,8 +127,25 @@ const update = asyncHandler(async(req,res) => {
     }
     catch(error) {
         console.log('Update error:'+error.message)
-        res.status(404)
+        res.status(400)
         throw new Error('Update error!')
+    }
+})
+
+//@desc     Remove a user
+//@route    DELETE /api/users/:userid
+//@access   Public
+const remove = asyncHandler(async(req,res) => {
+    const userid = req.params.userid
+
+    try {
+       const user = await User.findByIdAndDelete(userid)
+        res.status(200).json(user)
+    }
+    catch(error) {
+        console.log('Delete error:'+error.message)
+        res.status(400)
+        throw new Error('Delete error!')
     }
 })
 
@@ -152,8 +169,9 @@ const getUserChats = asyncHandler(async(req,res) => {
 module.exports = {
     register,
     login,
-    get,
     search,
+    get,
     update,
+    remove,
     getUserChats
 }

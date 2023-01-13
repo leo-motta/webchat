@@ -35,23 +35,6 @@ const login = createAsyncThunk(
     }
 )
 
-//GET /api/users/:userid
-const asyncGetUser = async(userid) => {
-    const response = await axios.get('/api/users/' + userid)
-    return response.data
-}
-const get = createAsyncThunk(
-    'user/get',
-    async(userid, thunkAPI) => {
-        try {
-            return await asyncGetUser(userid)
-        } catch(error) {
-            console.log(error.message)     
-            return thunkAPI.rejectWithValue(error.message) 
-        }
-    }
-)
-
 //GET /api/users/search?name=''
 const asyncUserSearch = async(name) => {
     const response = await axios.get('/api/users/search', { params: { name: name } })
@@ -62,6 +45,23 @@ const search = createAsyncThunk(
     async(name,thunkAPI) => {
         try {
             return await asyncUserSearch(name)
+        } catch(error) {
+            console.log(error.message)     
+            return thunkAPI.rejectWithValue(error.message) 
+        }
+    }
+)
+
+//GET /api/users/:userid
+const asyncGetUser = async(userid) => {
+    const response = await axios.get('/api/users/' + userid)
+    return response.data
+}
+const get = createAsyncThunk(
+    'user/get',
+    async(userid, thunkAPI) => {
+        try {
+            return await asyncGetUser(userid)
         } catch(error) {
             console.log(error.message)     
             return thunkAPI.rejectWithValue(error.message) 
@@ -86,12 +86,30 @@ const update = createAsyncThunk(
     }
 )
 
+//DELETE  /api/users/:userid
+const asyncRemoveUser = async(userid) => {
+    const response = await axios.delete('/api/users/' + userid)
+    return response.data
+}
+const remove = createAsyncThunk(
+    'user/get',
+    async(userid, thunkAPI) => {
+        try {
+            return await asyncRemoveUser(userid)
+        } catch(error) {
+            console.log(error.message)     
+            return thunkAPI.rejectWithValue(error.message) 
+        }
+    }
+)
+
 const userService = {
     register,
     login,
-    get,
     search,
-    update
+    get,
+    update,
+    remove
 }
 
 export default userService

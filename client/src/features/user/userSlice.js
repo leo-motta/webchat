@@ -37,7 +37,7 @@ export const userSlice = createSlice({
                 state.isLoading = false
                 state.isError = true
             })
-            .addCase(userService.search.rejected, (state, action) => {
+            .addCase(userService.search.rejected, (state) => {
                 state.userList = null
             })
             .addCase(userService.search.fulfilled, (state, action) => {
