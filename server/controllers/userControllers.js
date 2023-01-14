@@ -120,6 +120,10 @@ const updateUser = asyncHandler(async(req,res) => {
 
     const userid = req.params.userid
     const { name, email, password, imageURL } = req.body
+
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(password, salt)
+
     const updatedAt = new Date().toISOString()
     try {
         const user = await User.findByIdAndUpdate(
@@ -128,7 +132,7 @@ const updateUser = asyncHandler(async(req,res) => {
             $set: {
                 name: name,
                 email: email,
-                password: password,
+                password: hashedPassword,
                 imageURL: imageURL,
                 updatedAt: updatedAt
             }
