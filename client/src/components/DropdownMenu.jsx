@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { FaBars } from "react-icons/fa"
-import { BsBoxArrowRight, BsGearFill, BsFillChatFill } from "react-icons/bs";
-import { IconContext } from "react-icons";
+import { BsBoxArrowRight, BsGearFill, BsFillChatFill } from "react-icons/bs"
+import { IconContext } from "react-icons"
+import { logout } from '../features/user/userSlice'
+import { reset } from '../features/chat/chatSlice'
 
 const DropdownMenu = (props) => {
     const [open, setOpen] = useState(false)
     const [profileText, setProfileText] = useState('Profile')
-
+    
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     useEffect(() => {
         setOpen(false)
@@ -20,7 +24,8 @@ const DropdownMenu = (props) => {
     }, [props.openOptions])
 
     const onLogout = () => {
-        //dispatch(userService.logout())
+        dispatch(logout())
+        dispatch(reset())
         navigate('/')
     }
 

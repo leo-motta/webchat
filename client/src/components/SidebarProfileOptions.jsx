@@ -1,13 +1,17 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import userService from '../features/user/userService'
+import { logout } from '../features/user/userSlice'
+import { reset } from '../features/chat/chatSlice'
 
 const SidebarProfileOptions = (props) => {
     const [formData, setFormData] = useState({ id:'', name: '', email: '', password: '', imageURL: '' })
 
     const { currentUser } = useSelector((state) => state.user)
 
+    const navigate = useNavigate()
     const dispatch = useDispatch()
 
     //Updates formData
@@ -35,6 +39,7 @@ const SidebarProfileOptions = (props) => {
         dispatch(userService.update(formData))
             .then(() => {
                 props.changeOptions(false)
+                dispatch(reset())
             })
             .catch((error) => {
                 console.log(`Update Error: ${error.message}`)
@@ -46,6 +51,9 @@ const SidebarProfileOptions = (props) => {
         dispatch(userService.remove(formData.id))
             .then(() => {
                 props.changeOptions(false)
+                dispatch(reset())
+                dispatch(logout())
+                navigate('/')
             })
             .catch((error) => {
                 console.log(`Delete Error: ${error.message}`)

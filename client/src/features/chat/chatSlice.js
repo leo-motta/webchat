@@ -10,8 +10,9 @@ export const chatSlice = createSlice({
     name:'chat',
     initialState,
     reducers: {
-        selectChat: (state, action) => {
-            state.currentChat = action.payload
+        reset: (state) => {
+            state.chatList = null
+            state.currentChat = null
         }
     },
     extraReducers: (builder) => {
@@ -28,5 +29,5 @@ export const chatSlice = createSlice({
     }
 })
 
-export const { selectChat } = chatSlice.actions
+export const { reset } = chatSlice.actions
 export default chatSlice.reducer
