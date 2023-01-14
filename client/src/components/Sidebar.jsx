@@ -56,7 +56,7 @@ const Sidebar = () => {
                 />
             </div>
 
-            <div className="bg-white h-[39em] min-h-[39em] max-h-[39em] overflow-y-scroll">
+            <div className="bg-white h-[39em] min-h-[39em] max-h-[39em] overflow-y-scroll rounded-bl">
                 {
                     (openOptions) ? 
                     <SidebarProfileOptions changeOptions={changeOptions}/> :

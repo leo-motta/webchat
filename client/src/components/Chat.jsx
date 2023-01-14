@@ -54,7 +54,7 @@ const Chat = () => {
                     )}
             </div>
 
-            <div className="bg-slate-200 h-[35em] min-h-[35em] max-h-[35em] overflow-y-scroll relative">
+            <div className="bg-white h-[35em] min-h-[35em] max-h-[35em] overflow-y-scroll relative">
                 {
                     (currentChat && currentChat.messages && currentChat.messages.length > 1) &&
                     currentChat.messages
@@ -64,9 +64,9 @@ const Chat = () => {
                             const date = new Date(message.date).toLocaleTimeString().substring(0, 5)
                             return (
                                 <div className={classVar} key={message._id}>
-                                    <div className='min-w-[6em] max-w-[26em] rounded bg-slate-700 text-white  m-2 px-2 pt-4 pb-1 drop-shadow-sm'>
+                                    <div className='min-w-[6em] max-w-[26em] rounded bg-sky-600 text-white  m-2 px-2 pt-4 pb-1 drop-shadow-sm'>
                                         <p className='px-1 text-lg break-words'>{message.text}</p>
-                                        <p className='timestamp text-right text-sm text-gray-400'>{date}</p>
+                                        <p className='timestamp mt-2 text-right text-sm text-gray-300'>{date}</p>
                                     </div>
                                 </div>
                             )
@@ -75,14 +75,14 @@ const Chat = () => {
             </div>
             <div>
                 <input
-                    className="absolute w-[40em] h-[2.7em] pl-6 pr-20 border-t-2 border-gray-300 text-2xl leading-4 text-gray-500 outline-none"
+                    className="absolute w-[40em] h-[2.7em] pl-6 pr-20 border-t-2 border-gray-300 text-2xl leading-4 text-gray-500 outline-none rounded-br"
                     placeholder="Write a message"
                     onChange={(e) => setMessage(e.target.value)}
                     onKeyDown={(e) => { (e.code === "Enter") && sendMessage() }}
                     value={message}
                 />
                 <button
-                    className="absolute  ml-[56em] bg-red h-[4em] w-10 ml-6"
+                    className="absolute  ml-[56em] h-[4em] w-10 ml-6"
                     onClick={sendMessage}
                 >
                     <IconContext.Provider value={{ size: "2em", className: "text-slate-500" }}>
