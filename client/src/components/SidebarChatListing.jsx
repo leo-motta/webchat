@@ -19,10 +19,10 @@ const SidebarChatListing = (props) => {
 
                 dispatch(userService.get(userid))
                     .then((data) => {
-                        const newUser = data.payload
-                        newUser.chatId = chat.chatId
-                        newUser.lastMessage = chat.lastMessage
-                        setChatUserList((state) => ([...state, newUser]))
+                        let user = data.payload
+                        user.chatId = chat.chatId
+                        user.lastMessage = chat.lastMessage
+                        setChatUserList((state) => ([...state, user]))
                     })
             })
         }
@@ -32,7 +32,7 @@ const SidebarChatListing = (props) => {
     const createChat = (anotherUser) => {
         if (currentUser) {
             dispatch(chatService.create({ this_userid: currentUser._id, another_userid: anotherUser._id }))
-            props.changeIsSearching(false)
+                .then(() => props.changeIsSearching(false))
         }
     }
 

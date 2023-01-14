@@ -1,13 +1,14 @@
-const { register, login, search, get, update, remove, getUserChats } = require('../controllers/userControllers')
+const { registerUser, loginUser, searchUsers, getUser, updateUser, removeUser, getUserChats } = require('../controllers/userControllers')
 const express = require('express')
 const router = express.Router()
+const { protectRoute } = require('../middleware/authHandler')
 
-router.post('/register', register)
-router.post('/login', login)
-router.get('/search', search)
-router.get('/:userid', get)
-router.put('/:userid', update)
-router.delete('/:userid', remove)
-router.get('/:userid/chats', getUserChats)
+router.post('/register', registerUser)
+router.post('/login', loginUser)
+router.get('/search', protectRoute, searchUsers)
+router.get('/:userid', protectRoute, getUser)
+router.put('/:userid', protectRoute, updateUser)
+router.delete('/:userid', protectRoute, removeUser)
+router.get('/:userid/chats', protectRoute, getUserChats)
 
 module.exports = router

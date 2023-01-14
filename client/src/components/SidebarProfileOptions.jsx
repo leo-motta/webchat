@@ -32,25 +32,24 @@ const SidebarProfileOptions = (props) => {
 
     const updateUser = (e) => {
         e.preventDefault()
-        try {
-            dispatch(userService.update(formData))
-            props.changeOptions(false)
-        }
-        catch (err) {
-            console.log(`Sign in Error: ${err.message}`)
-        }
+        dispatch(userService.update(formData))
+            .then(() => {
+                props.changeOptions(false)
+            })
+            .catch((error) => {
+                console.log(`Update Error: ${error.message}`)
+            })
     }
     
     const removeUser = (e) => {
         e.preventDefault()
-        try {
-            dispatch(userService.remove(formData.id))
-            props.changeOptions(false)
-            //Todo: navigate back to SignIn page
-        }
-        catch (err) {
-            console.log(`Sign in Error: ${err.message}`)
-        }
+        dispatch(userService.remove(formData.id))
+            .then(() => {
+                props.changeOptions(false)
+            })
+            .catch((error) => {
+                console.log(`Delete Error: ${error.message}`)
+            })
     }
 
     return (

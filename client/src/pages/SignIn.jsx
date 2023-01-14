@@ -1,24 +1,19 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import userService from '../features/user/userService'
 
 const SignIn = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { currentUser, isError } = useSelector((state) => state.user)
+    const { isError } = useSelector((state) => state.user)
     const [userFormData, setUserFormData] = useState({
         email: '',
         password: ''
     })
 
-    useEffect(() => {
-        if (currentUser && !isError) {
-            navigate('/home')
-        }
-        // eslint-disable-next-line
-    }, [currentUser, isError])
+    const { email, password } = userFormData
 
     const onChange = (e) => {
         setUserFormData((prevState) => ({
@@ -29,12 +24,18 @@ const SignIn = () => {
 
     const onSubmit = (e) => {
         e.preventDefault()
-        try {
-            dispatch(userService.login(userFormData))
-        }
-        catch (err) {
-            console.log(`Sign in Error: ${err.message}`)
-        }
+
+        const userData = {
+            email,
+            password
+        }      
+
+        dispatch(userService.login(userData))
+            .unwrap()
+            .then(() => {
+                navigate('/home')
+            })
+            .catch((error) => console.log(`Sign in Error: ${error.message}`))
     }
 
     return (

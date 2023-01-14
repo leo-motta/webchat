@@ -4,8 +4,8 @@ const Chat = require('../models/chatModel')
 
 //@desc     Create a chat
 //@route    POST /api/chats/create
-//@access   Public
-const create = asyncHandler(async(req,res) => {
+//@access   Private
+const createChat = asyncHandler(async(req,res) => {
 
     const {this_userid, another_userid} = req.body
     
@@ -14,7 +14,9 @@ const create = asyncHandler(async(req,res) => {
         throw new Error('Cant create chat: same user')
     }
 
-    const thisUser = await User.findById(this_userid)
+
+    const thisUser = req.user 
+    //const thisUser = await User.findById(this_userid)
     const anotherUser = await User.findById(another_userid)
 
     if(!anotherUser) {
@@ -62,8 +64,8 @@ const create = asyncHandler(async(req,res) => {
 
 //@desc     Retrieve a single chat
 //@route    GET /api/chats/:chatid
-//@access   Public
-const get = asyncHandler(async(req,res) => 
+//@access   Private
+const getChat = asyncHandler(async(req,res) => 
 {
     const chatid = req.params.chatid
 
@@ -78,7 +80,7 @@ const get = asyncHandler(async(req,res) =>
 
 //@desc     Add a message
 //@route    PUT /api/chats/:chatid
-//@access   Public
+//@access   Private
 const addMessage = asyncHandler(async(req,res) => {
     const chatid = req.params.chatid
     const {userid, message} = req.body
@@ -112,7 +114,7 @@ const addMessage = asyncHandler(async(req,res) => {
 })
 
 module.exports = {
-    create,
-    get,
+    createChat,
+    getChat,
     addMessage
 }

@@ -1,12 +1,13 @@
 const asyncHandler = require('express-async-handler')
 const User = require('../models/userModel')
 const Chat = require('../models/chatModel')
-const url = require('url');
+const { generateToken } = require('../middleware/authHandler')
+const url = require('url')
 
 //@desc     Register a new user
 //@route    POST /api/users/register
 //@access   Public
-const register = asyncHandler(async(req,res) => {
+const registerUser = asyncHandler(async(req,res) => {
 
     const { name, email, password} = req.body
 
@@ -34,6 +35,7 @@ const register = asyncHandler(async(req,res) => {
             name:user.name,
             email:user.email,
             imageURL:user.imageURL,
+            token:generateToken(user._id)
         })
     } else {
         res.status(400)
@@ -44,7 +46,7 @@ const register = asyncHandler(async(req,res) => {
 //@desc     Login a user
 //@route    POST /api/users/login
 //@access   Public
-const login = asyncHandler(async(req,res) => {
+const loginUser = asyncHandler(async(req,res) => {
 
     const {email, password} = req.body
 
@@ -55,7 +57,8 @@ const login = asyncHandler(async(req,res) => {
             _id:user._id,
             name:user.name,
             email:user.email,
-            imageURL:user.imageURL
+            imageURL:user.imageURL,
+            token:generateToken(user._id)
         })
         throw new Error('User already exists')
     }
@@ -67,8 +70,8 @@ const login = asyncHandler(async(req,res) => {
 
 //@desc     Search users
 //@route    GET /api/users/search?name=''
-//@access   Public
-const search = asyncHandler(async(req,res) => {
+//@access   Private
+const searchUsers = asyncHandler(async(req,res) => {
 
     const queryObject = url.parse(req.url, true).query;
 
@@ -88,8 +91,8 @@ const search = asyncHandler(async(req,res) => {
 
 //@desc     Retrieve a single user
 //@route    GET /api/users/:userid
-//@access   Public
-const get = asyncHandler(async(req,res) => {
+//@access   Private
+const getUser = asyncHandler(async(req,res) => {
     const userid = req.params.userid
 
     const user = await User.findById(userid)
@@ -104,8 +107,9 @@ const get = asyncHandler(async(req,res) => {
 
 //@desc     Update a user
 //@route    PUT /api/users/:userid
-//@access   Public
-const update = asyncHandler(async(req,res) => {
+//@access   Private
+const updateUser = asyncHandler(async(req,res) => {
+
     const userid = req.params.userid
     const { name, email, password, imageURL } = req.body
     const updatedAt = new Date().toISOString()
@@ -122,8 +126,10 @@ const update = asyncHandler(async(req,res) => {
             }
         },
         { returnOriginal:false})
-
-        res.status(200).json(user)
+        let updatedUser = user.toObject()
+        //Generate a new token
+        updatedUser.token = generateToken(userid)
+        res.status(200).json(updatedUser)
     }
     catch(error) {
         console.log('Update error:'+error.message)
@@ -134,8 +140,8 @@ const update = asyncHandler(async(req,res) => {
 
 //@desc     Remove a user
 //@route    DELETE /api/users/:userid
-//@access   Public
-const remove = asyncHandler(async(req,res) => {
+//@access   Private
+const removeUser = asyncHandler(async(req,res) => {
     const userid = req.params.userid
 
     try {
@@ -151,7 +157,7 @@ const remove = asyncHandler(async(req,res) => {
 
 //@desc     Retrieve user chats
 //@route    GET /api/users/:userid/chats
-//@access   Public
+//@access   Private
 const getUserChats = asyncHandler(async(req,res) => {
 
     var regex = new RegExp('^.*'+ req.params.userid);
@@ -167,11 +173,11 @@ const getUserChats = asyncHandler(async(req,res) => {
 })
 
 module.exports = {
-    register,
-    login,
-    search,
-    get,
-    update,
-    remove,
+    registerUser,
+    loginUser,
+    searchUsers,
+    getUser,
+    updateUser,
+    removeUser,
     getUserChats
 }
