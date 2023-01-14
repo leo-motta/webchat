@@ -6,7 +6,7 @@
 ![Node Version](https://img.shields.io/badge/node-v17.0-brightgreen.svg)
 ![Mongoose Version](https://img.shields.io/badge/mongoose-v6.8.2-blue.svg)
 
-[<img src="https://github.com/leo-motta/webchat/blob/master/screenshots/screenshot_03.png" width="1000">](https://codepen.io/leonardomotta012/live/NWBGaYo)
+[<img src="https://github.com/leo-motta/webchat/blob/master/screenshots/screenshot_03.png" width="1000">](https://raw.githubusercontent.com/leo-motta/webchat/master/screenshots/screenshot_03.png)
 
 ## Stack
 
