@@ -1,6 +1,6 @@
 # Web Chat 💬 &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/leo-motta/webchat/blob/master/LICENSE) ![NPM Version](https://img.shields.io/badge/npm-v8.1.0-blue.svg) ![Node Version](https://img.shields.io/badge/node-v17.0-green.svg) &middot; [demo video](https://www.youtube.com/watch?v=5qVgYOGONhY)
  
-> Live chat built with the MERN stack(MongoDB, Express, React & Node)
+> Live chat built with the MERN stack.
 
 [<img src="https://github.com/leo-motta/webchat/blob/master/screenshots/screenshot_03.png" width="1000">](https://raw.githubusercontent.com/leo-motta/webchat/master/screenshots/screenshot_03.png)
 <!-- 
