@@ -1,4 +1,4 @@
-# Web Chat 💬 [Demo Video](https://www.youtube.com/watch?v=5qVgYOGONhY)
+# Web Chat 💬 [demo video](https://www.youtube.com/watch?v=5qVgYOGONhY)
 
 > Live chat built with the MERN stack(MongoDB, Express, React & Node)
 
