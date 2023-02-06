@@ -16,10 +16,10 @@
 
 -->
 ## Features
-- **JSON Web Token** route protection
-- **Bcrypt** password hashing/encryption
-- **Redux Toolkit** state managment
-- **TailwindCSS** styles
+- Route protection with JSON Web Token
+- Password hashing/encryption using Bcrypt
+- Global state management with Redux Toolkit 
+- Styles with TailwindCSS 
  
 ## Usage
 
